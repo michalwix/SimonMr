@@ -155,12 +155,14 @@ export const SimonBoard: React.FC<SimonBoardProps> = ({
   const handleColorClick = (color: Color) => {
     if (disabled || isShowingSequence || !isInputPhase) return;
     
-    // Brief visual feedback
-    setActiveColor(color);
-    setTimeout(() => setActiveColor(null), 200);
-    
-    // Call parent handler
-    onColorClick(color);
+    // Brief visual feedback (only if not disabled)
+    if (!disabled) {
+      setActiveColor(color);
+      setTimeout(() => setActiveColor(null), 200);
+      
+      // Call parent handler
+      onColorClick(color);
+    }
   };
   
   // Get color emoji for display
@@ -182,12 +184,12 @@ export const SimonBoard: React.FC<SimonBoardProps> = ({
           Round {round}
         </h2>
         <p className="text-sm sm:text-base md:text-lg text-gray-300">
-          {isShowingSequence 
-            ? '👀 Watch the sequence!' 
-            : isInputPhase
-              ? '🎮 Your turn!' 
-              : disabled 
-                ? '⏸️ Waiting...' 
+          {disabled 
+            ? '👻 Spectating...' 
+            : isShowingSequence 
+              ? '👀 Watch the sequence!' 
+              : isInputPhase
+                ? '🎮 Your turn!' 
                 : '✅ Ready'}
         </p>
       </div>

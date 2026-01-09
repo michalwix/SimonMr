@@ -31,6 +31,9 @@ export function WaitingRoomPage() {
     secondsRemaining,
     timerColor,
     isTimerPulsing,
+    isEliminated,
+    scores,
+    submittedPlayers,
     initializeListeners,
     cleanup,
     addColorToSequence,
@@ -216,6 +219,58 @@ export function WaitingRoomPage() {
           </div>
           
           {/* Simon Board */}
+          {/* Step 4: Scoreboard */}
+          {isGameActive && Object.keys(scores).length > 0 && (
+            <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-4 w-full max-w-sm">
+              <h3 className="text-white text-sm sm:text-base font-bold mb-2 text-center">
+                🏆 Scoreboard
+              </h3>
+              <div className="space-y-1">
+                {players.map((player) => {
+                  const score = scores[player.id] || 0;
+                  const hasSubmitted = submittedPlayers.includes(player.id);
+                  const isCurrentPlayer = player.id === playerId;
+                  
+                  return (
+                    <div
+                      key={player.id}
+                      className={`flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 rounded ${
+                        isCurrentPlayer ? 'bg-blue-600' : 'bg-gray-700'
+                      }`}
+                    >
+                      <span className="text-white text-xs sm:text-sm flex items-center gap-1 sm:gap-2">
+                        <span>{player.avatar}</span>
+                        <span>{player.displayName}</span>
+                        {isCurrentPlayer && <span className="text-xs">(you)</span>}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-white text-xs sm:text-sm font-bold">
+                          {score} pts
+                        </span>
+                        {hasSubmitted && isInputPhase && (
+                          <span className="text-green-400 text-xs">✓</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
+          {/* Step 4: Eliminated Message */}
+          {isEliminated && (
+            <div className="bg-red-500/20 border-2 border-red-500 rounded-xl sm:rounded-2xl p-4 mb-4 text-center max-w-sm w-full">
+              <div className="text-4xl mb-2">💀</div>
+              <div className="text-white text-lg sm:text-xl font-bold">
+                You were eliminated!
+              </div>
+              <div className="text-gray-300 text-xs sm:text-sm mt-1">
+                Watching as spectator...
+              </div>
+            </div>
+          )}
+          
           <SimonBoard
             sequence={currentSequence}
             round={currentRound}
@@ -230,7 +285,7 @@ export function WaitingRoomPage() {
                 submitSequence(gameCode, playerId);
               }
             }}
-            disabled={false}
+            disabled={isEliminated}
             secondsRemaining={secondsRemaining}
             timerColor={timerColor}
             isTimerPulsing={isTimerPulsing}

@@ -31,6 +31,16 @@ interface SimonStore {
   timerColor: 'green' | 'yellow' | 'red';
   isTimerPulsing: boolean;
   
+  // Step 4: Competitive Multiplayer
+  scores: Record<string, number>;
+  playerStatuses: Record<string, 'playing' | 'eliminated' | 'spectating'>;
+  submittedPlayers: string[]; // Players who submitted this round
+  isEliminated: boolean;
+  roundResult: {
+    roundWinner: { playerId: string; name: string } | null;
+    eliminations: Array<{ playerId: string; name: string; reason: string }>;
+  } | null;
+  
   // Result state
   lastResult: {
     isCorrect: boolean;
@@ -73,6 +83,11 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
   secondsRemaining: 0,
   timerColor: 'green',
   isTimerPulsing: false,
+  scores: {},
+  playerStatuses: {},
+  submittedPlayers: [],
+  isEliminated: false,
+  roundResult: null,
   lastResult: null,
   message: 'Waiting for game to start...',
   isGameActive: false,
@@ -171,14 +186,58 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       });
     });
     
-    // Listen for game finished
-    socket.on('simon:game_finished', (data: { winnerId: string; winnerName: string; finalRound: number }) => {
+    // Listen for player submitted (Step 4)
+    socket.on('simon:player_submitted', (data: { playerId: string; playerName: string }) => {
+      console.log('📝 Player submitted:', data.playerName);
+      
+      set((state) => ({
+        submittedPlayers: [...state.submittedPlayers, data.playerId],
+        message: `${data.playerName} submitted! ✅`,
+      }));
+    });
+    
+    // Listen for round result (Step 4)
+    socket.on('simon:round_result', (data: any) => {
+      console.log('🏁 Round result:', data);
+      
+      // Stop timer
+      const store = get();
+      store.stopTimer();
+      
+      set({
+        isInputPhase: false,
+        roundResult: {
+          roundWinner: data.roundWinner,
+          eliminations: data.eliminations,
+        },
+        scores: data.scores,
+        playerStatuses: data.playerStatuses,
+        submittedPlayers: [], // Clear for next round
+        message: data.roundWinner 
+          ? `🏆 ${data.roundWinner.name} wins the round! +1 pt`
+          : '⚠️ No winner this round',
+      });
+      
+      // Check if current player was eliminated
+      const playerId = get().gameState?.playerStates ? Object.keys(get().gameState!.playerStates)[0] : null;
+      if (playerId && data.playerStatuses[playerId] === 'eliminated') {
+        set({ isEliminated: true });
+      }
+    });
+    
+    // Listen for game finished (Step 4)
+    socket.on('simon:game_finished', (data: { winner: any; finalScores: any[] }) => {
       console.log('🏆 Game finished:', data);
+      
+      const scoreboard = data.finalScores
+        .map((s: any) => `${s.name}: ${s.score} pts`)
+        .join(', ');
       
       set({
         isShowingSequence: false,
         isGameActive: false,
-        message: `Game Over! Winner: ${data.winnerName} (Round ${data.finalRound})`,
+        isInputPhase: false,
+        message: `🏆 Winner: ${data.winner.name} (${data.winner.score} pts)! Final: ${scoreboard}`,
       });
     });
     
@@ -211,6 +270,8 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
     socket.off('simon:input_phase');
     socket.off('simon:result');
     socket.off('simon:timeout');
+    socket.off('simon:player_submitted');
+    socket.off('simon:round_result');
     socket.off('simon:game_finished');
     socket.off('simon:player_eliminated');
     socket.off('simon:input_correct');
@@ -235,6 +296,11 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       secondsRemaining: 0,
       timerColor: 'green',
       isTimerPulsing: false,
+      scores: {},
+      playerStatuses: {},
+      submittedPlayers: [],
+      isEliminated: false,
+      roundResult: null,
       lastResult: null,
       message: 'Waiting for game to start...',
       isGameActive: false,
