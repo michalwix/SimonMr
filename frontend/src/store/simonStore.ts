@@ -104,22 +104,22 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
     
     // Get socket (it should be connected by now)
     const socket = socketService.getSocket();
-    if (!socket || !socket.connected) {
-      console.error('❌ Socket not connected yet, retrying...');
-      // Retry after a short delay
-      setTimeout(() => {
-        const retrySocket = socketService.getSocket();
-        if (retrySocket && retrySocket.connected) {
-          console.log('✅ Socket connected on retry, initializing listeners');
-          get().initializeListeners();
-        } else {
-          console.error('❌ Failed to connect socket after retry');
-        }
-      }, 100);
+    if (!socket) {
+      console.error('❌ Socket not available');
       return;
     }
     
-    console.log('✅ Socket connected, setting up Simon listeners');
+    if (!socket.connected) {
+      console.warn('⚠️ Socket not connected yet, waiting for connection...');
+      // Wait for socket to connect, then initialize
+      socket.once('connect', () => {
+        console.log('✅ Socket connected, now initializing Simon listeners');
+        get().initializeListeners();
+      });
+      return;
+    }
+    
+    console.log('✅ Socket already connected, setting up Simon listeners');
     console.log('🔍 Socket ID:', socket.id);
     
     // DEBUG: Listen for ALL events
