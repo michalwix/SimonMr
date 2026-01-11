@@ -45,7 +45,6 @@ export function WaitingRoomPage() {
     initializeListeners,
     cleanup,
     addColorToSequence,
-    submitSequence,
     resetGame,
   } = useSimonStore();
   
