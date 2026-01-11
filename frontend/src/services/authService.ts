@@ -18,8 +18,10 @@ export async function createSession(
   displayName: string,
   avatarId: string
 ): Promise<CreateSessionResponse> {
-  const url = `${API_BASE_URL}/api/auth/create-session`;
-  console.log('🌐 Creating session:', { url, displayName, avatarId });
+  // Use fresh call to ensure correct URL (not cached constant)
+  const apiUrl = getApiUrl();
+  const url = `${apiUrl}/api/auth/create-session`;
+  console.log('🌐 Creating session:', { url, displayName, avatarId, apiUrl });
   
   try {
     const response = await fetch(url, {
@@ -59,8 +61,10 @@ export async function joinGame(
   avatarId: string,
   gameCode: string
 ): Promise<JoinGameResponse> {
-  const url = `${API_BASE_URL}/api/auth/join-game`;
-  console.log('🌐 Joining game:', { url, displayName, avatarId, gameCode });
+  // Use fresh call to ensure correct URL (not cached constant)
+  const apiUrl = getApiUrl();
+  const url = `${apiUrl}/api/auth/join-game`;
+  console.log('🌐 Joining game:', { url, displayName, avatarId, gameCode, apiUrl });
   
   try {
     const response = await fetch(url, {
@@ -96,7 +100,8 @@ export async function joinGame(
  * Verify if session is valid (on page load)
  */
 export async function verifySession(): Promise<VerifySessionResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/verify-session`, {
+  const apiUrl = getApiUrl();
+  const response = await fetch(`${apiUrl}/api/auth/verify-session`, {
     method: 'GET',
     credentials: 'include', // CRITICAL: Send cookies
   });
@@ -112,7 +117,8 @@ export async function verifySession(): Promise<VerifySessionResponse> {
  * Logout and leave game
  */
 export async function logout(): Promise<void> {
-  await fetch(`${API_BASE_URL}/api/auth/logout`, {
+  const apiUrl = getApiUrl();
+  await fetch(`${apiUrl}/api/auth/logout`, {
     method: 'POST',
     credentials: 'include',
   });
