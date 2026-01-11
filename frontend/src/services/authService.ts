@@ -9,7 +9,7 @@ import type {
   JoinGameResponse, 
   VerifySessionResponse 
 } from '../shared/types';
-import { API_BASE_URL, getApiUrl } from '../config/apiConfig';
+import { getApiUrl } from '../config/apiConfig';
 
 /**
  * Create a new game session (host)
