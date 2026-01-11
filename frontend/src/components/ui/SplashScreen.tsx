@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -10,12 +10,43 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 }) => {
   const [isFading, setIsFading] = useState(false);
 
-  const handleClick = () => {
+  const handleDismiss = () => {
+    if (isFading) return; // Prevent double-trigger
     setIsFading(true);
     setTimeout(() => {
       onComplete();
     }, 300);
   };
+
+  const handleClick = () => {
+    handleDismiss();
+  };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      handleDismiss();
+    }
+  };
+
+  // Auto-dismiss after 10 seconds as fallback
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isFading) {
+        setIsFading(true);
+        setTimeout(() => {
+          onComplete();
+        }, 300);
+      }
+    }, 10000);
+
+    // Add keyboard listener
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isFading, onComplete]);
 
   return (
     <div
