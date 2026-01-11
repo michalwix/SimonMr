@@ -25,23 +25,58 @@ declare global {
  */
 export function getApiUrl(): string {
   // PRIORITY 1: If on localhost, ALWAYS use localhost backend (development)
+  // This check MUST happen FIRST, before any env vars or other checks
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+    const href = window.location.href;
+    
+    // Log for debugging
+    console.log('🔍 getApiUrl() called:', { hostname, href, port: window.location.port });
+    
+    // Check for localhost in multiple ways
+    const isLocalhost = 
+      hostname === 'localhost' || 
+      hostname === '127.0.0.1' || 
+      hostname === '' ||
+      hostname === '0.0.0.0' ||
+      href.includes('localhost') ||
+      href.includes('127.0.0.1') ||
+      href.includes(':5173'); // Vite dev server port
+    
+    if (isLocalhost) {
       const devUrl = 'http://localhost:3000';
-      console.log('🔧 Development mode detected - using localhost:', devUrl);
+      console.log('✅ LOCALHOST DETECTED - Using:', devUrl);
+      console.log('   Hostname:', hostname);
+      console.log('   Full URL:', href);
       return devUrl;
+    } else {
+      console.warn('⚠️ NOT localhost - hostname:', hostname);
     }
   }
   
-  // PRIORITY 2: Check build-time env var (set during Render build) - but only if not localhost
-  if (import.meta.env.VITE_API_URL && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
-    return import.meta.env.VITE_API_URL;
+  // PRIORITY 2: Check build-time env var (set during Render build) - but ONLY if NOT localhost
+  // CRITICAL: Even if VITE_API_URL is set, we ignore it if we're on localhost
+  if (import.meta.env.VITE_API_URL && typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '' || window.location.href.includes('localhost');
+    if (!isLocalhost) {
+      console.log('📦 Using VITE_API_URL from env:', import.meta.env.VITE_API_URL);
+      return import.meta.env.VITE_API_URL;
+    } else {
+      console.warn('⚠️ VITE_API_URL is set but we are on localhost - IGNORING it:', import.meta.env.VITE_API_URL);
+    }
   }
 
-  // PRIORITY 3: Check runtime config (set via script tag in index.html) - but only if not localhost
-  if (window.__API_CONFIG__?.apiUrl && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
-    return window.__API_CONFIG__.apiUrl;
+  // PRIORITY 3: Check runtime config (set via script tag in index.html) - but ONLY if NOT localhost
+  if (window.__API_CONFIG__?.apiUrl && typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '' || window.location.href.includes('localhost');
+    if (!isLocalhost) {
+      console.log('📦 Using runtime config API URL:', window.__API_CONFIG__.apiUrl);
+      return window.__API_CONFIG__.apiUrl;
+    } else {
+      console.warn('⚠️ Runtime config API URL is set but we are on localhost - IGNORING it:', window.__API_CONFIG__.apiUrl);
+    }
   }
 
   // PRIORITY 4: Auto-detect in production (Render deployment) - ONLY if actually on Render
