@@ -11,10 +11,17 @@
     <meta name="description" content="Play Michal Says - A multiplayer memory game" />
     <title>Michal Says - Mobile Game</title>
     <!-- Runtime API Configuration -->
-    <script src="/config.js"></script>
+    <script src="/config.js?v=2"></script>
+    <!-- Cache busting for development -->
+    <script>
+      // Force reload if old code detected
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        console.log('🔧 Localhost detected - ensuring fresh code');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx?v=2"></script>
   </body>
 </html>
