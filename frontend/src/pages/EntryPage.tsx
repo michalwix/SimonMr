@@ -80,73 +80,207 @@ export function EntryPage() {
 
   if (!mode) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      <div 
+        style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #ec4899 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
         {/* Animated background circles */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '5rem',
+            left: '2.5rem',
+            width: '18rem',
+            height: '18rem',
+            background: 'rgba(168, 85, 247, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '5rem',
+            right: '2.5rem',
+            width: '24rem',
+            height: '24rem',
+            background: 'rgba(236, 72, 153, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite',
+            animationDelay: '1s'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '20rem',
+            height: '20rem',
+            background: 'rgba(59, 130, 246, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite',
+            animationDelay: '0.5s'
+          }}></div>
         </div>
 
-        <div className="relative z-10 bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 sm:p-10 md:p-12 max-w-lg w-full border border-white/20">
+        <div style={{
+          position: 'relative',
+          zIndex: 10,
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '1.5rem',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          padding: '2rem',
+          maxWidth: '32rem',
+          width: '100%',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
           {/* Logo/Title Section */}
-          <div className="text-center mb-10">
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             {/* Animated Color Circles */}
-            <div className="flex justify-center gap-3 mb-6">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-red-400 to-red-600 shadow-lg animate-bounce" style={{ animationDelay: '0s' }}></div>
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg animate-bounce" style={{ animationDelay: '0.6s' }}></div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+              <div style={{
+                width: '3rem',
+                height: '3rem',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #f87171, #dc2626)',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                animation: 'bounce 1s ease-in-out infinite',
+                animationDelay: '0s'
+              }}></div>
+              <div style={{
+                width: '3rem',
+                height: '3rem',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #60a5fa, #2563eb)',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                animation: 'bounce 1s ease-in-out infinite',
+                animationDelay: '0.2s'
+              }}></div>
+              <div style={{
+                width: '3rem',
+                height: '3rem',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #fbbf24, #d97706)',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                animation: 'bounce 1s ease-in-out infinite',
+                animationDelay: '0.4s'
+              }}></div>
+              <div style={{
+                width: '3rem',
+                height: '3rem',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #34d399, #059669)',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                animation: 'bounce 1s ease-in-out infinite',
+                animationDelay: '0.6s'
+              }}></div>
             </div>
             
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black mb-4 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl">
+            <h1 style={{
+              fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
+              fontWeight: 900,
+              marginBottom: '1rem',
+              background: 'linear-gradient(to right, #ffffff, #e9d5ff, #fce7f3)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}>
               MICHAL SAYS
             </h1>
-            <p className="text-white/90 text-lg sm:text-xl font-semibold mb-2">Memory Challenge</p>
-            <p className="text-white/70 text-sm sm:text-base">Test your memory with friends!</p>
+            <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              Memory Challenge
+            </p>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' }}>
+              Test your memory with friends!
+            </p>
           </div>
           
           {/* Action Buttons */}
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <button
               onClick={() => setMode('create')}
-              className="w-full group relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 hover:from-purple-700 hover:via-purple-800 hover:to-pink-700 text-white font-bold py-5 px-8 rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300 text-lg min-h-[64px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                width: '100%',
+                background: 'linear-gradient(to right, #9333ea, #a855f7, #ec4899)',
+                color: 'white',
+                fontWeight: 'bold',
+                padding: '1.25rem 2rem',
+                borderRadius: '1rem',
+                border: 'none',
+                fontSize: '1.125rem',
+                minHeight: '64px',
+                cursor: 'pointer',
+                boxShadow: '0 20px 25px -5px rgba(147, 51, 234, 0.5)',
+                transition: 'all 0.3s',
+                touchAction: 'manipulation'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(147, 51, 234, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(147, 51, 234, 0.5)';
+              }}
             >
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="text-2xl">✨</span>
-                <span>Create New Game</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              ✨ Create New Game
             </button>
             
             <button
               onClick={() => setMode('join')}
-              className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-700 text-white font-bold py-5 px-8 rounded-2xl shadow-2xl hover:shadow-blue-500/50 transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300 text-lg min-h-[64px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                width: '100%',
+                background: 'linear-gradient(to right, #2563eb, #3b82f6, #06b6d4)',
+                color: 'white',
+                fontWeight: 'bold',
+                padding: '1.25rem 2rem',
+                borderRadius: '1rem',
+                border: 'none',
+                fontSize: '1.125rem',
+                minHeight: '64px',
+                cursor: 'pointer',
+                boxShadow: '0 20px 25px -5px rgba(37, 99, 235, 0.5)',
+                transition: 'all 0.3s',
+                touchAction: 'manipulation'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(37, 99, 235, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(37, 99, 235, 0.5)';
+              }}
             >
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="text-2xl">🎯</span>
-                <span>Join Game</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              🎯 Join Game
             </button>
           </div>
 
           {/* Features */}
-          <div className="mt-8 pt-8 border-t border-white/20">
-            <div className="grid grid-cols-3 gap-4 text-center">
+          <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'center' }}>
               <div>
-                <div className="text-2xl mb-1">👥</div>
-                <div className="text-white/80 text-xs font-medium">Up to 4 Players</div>
+                <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>👥</div>
+                <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.75rem', fontWeight: 500 }}>Up to 4 Players</div>
               </div>
               <div>
-                <div className="text-2xl mb-1">⚡</div>
-                <div className="text-white/80 text-xs font-medium">Real-time</div>
+                <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>⚡</div>
+                <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.75rem', fontWeight: 500 }}>Real-time</div>
               </div>
               <div>
-                <div className="text-2xl mb-1">🏆</div>
-                <div className="text-white/80 text-xs font-medium">Compete</div>
+                <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>🏆</div>
+                <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.75rem', fontWeight: 500 }}>Compete</div>
               </div>
             </div>
           </div>
