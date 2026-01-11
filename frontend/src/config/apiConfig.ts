@@ -20,7 +20,8 @@ declare global {
  * Priority:
  * 1. Build-time env var (VITE_API_URL) - set in Render
  * 2. Runtime config from window.__API_CONFIG__ - set via script tag
- * 3. Development fallback (localhost)
+ * 3. Auto-detect from frontend URL (production only)
+ * 4. Development fallback (localhost)
  */
 export function getApiUrl(): string {
   // 1. Check build-time env var (set during Render build)
@@ -33,13 +34,36 @@ export function getApiUrl(): string {
     return window.__API_CONFIG__.apiUrl;
   }
 
-  // 3. Development fallback
+  // 3. Auto-detect in production (Render deployment)
+  if (import.meta.env.PROD && typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    
+    // If on Render domain, try to construct backend URL
+    if (hostname.includes('onrender.com')) {
+      // Pattern: simon-game-frontend-XXXX.onrender.com -> simon-game-backend-XXXX.onrender.com
+      const match = hostname.match(/simon-game-frontend-([^.]+)/);
+      if (match) {
+        const backendUrl = `https://simon-game-backend-${match[1]}.onrender.com`;
+        console.log('🔍 Auto-detected backend URL:', backendUrl);
+        return backendUrl;
+      }
+      
+      // Alternative: try replacing 'frontend' with 'backend'
+      if (hostname.includes('frontend')) {
+        const backendUrl = hostname.replace('frontend', 'backend');
+        console.log('🔍 Auto-detected backend URL:', `https://${backendUrl}`);
+        return `https://${backendUrl}`;
+      }
+    }
+  }
+
+  // 4. Development fallback
   return 'http://localhost:3000';
 }
 
 /**
  * Get the WebSocket URL
- * Same priority as API URL
+ * Same priority as API URL - always uses same URL as API
  */
 export function getSocketUrl(): string {
   // 1. Check build-time env var
@@ -52,7 +76,7 @@ export function getSocketUrl(): string {
     return window.__API_CONFIG__.socketUrl;
   }
 
-  // 3. Use same as API URL
+  // 3. Use same as API URL (WebSocket uses same endpoint)
   return getApiUrl();
 }
 
