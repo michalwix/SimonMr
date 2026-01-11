@@ -75,31 +75,75 @@ export function EntryPage() {
 
   if (!mode) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 flex items-center justify-center p-4 sm:p-6">
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-10 max-w-md w-full border border-white/20">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
-              🎮 Simon Says
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        {/* Animated background circles */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        <div className="relative z-10 bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 sm:p-10 md:p-12 max-w-lg w-full border border-white/20">
+          {/* Logo/Title Section */}
+          <div className="text-center mb-10">
+            {/* Animated Color Circles */}
+            <div className="flex justify-center gap-3 mb-6">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-red-400 to-red-600 shadow-lg animate-bounce" style={{ animationDelay: '0s' }}></div>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg animate-bounce" style={{ animationDelay: '0.6s' }}></div>
+            </div>
+            
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black mb-4 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl">
+              SIMON SAYS
             </h1>
-            <p className="text-gray-600 text-base sm:text-lg font-medium">Color Race Edition</p>
+            <p className="text-white/90 text-lg sm:text-xl font-semibold mb-2">Memory Challenge</p>
+            <p className="text-white/70 text-sm sm:text-base">Test your memory with friends!</p>
           </div>
           
+          {/* Action Buttons */}
           <div className="space-y-4">
             <button
               onClick={() => setMode('create')}
-              className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-lg min-h-[56px]"
+              className="w-full group relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 hover:from-purple-700 hover:via-purple-800 hover:to-pink-700 text-white font-bold py-5 px-8 rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300 text-lg min-h-[64px]"
               style={{ touchAction: 'manipulation' }}
             >
-              Create Game
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <span className="text-2xl">✨</span>
+                <span>Create New Game</span>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </button>
             
             <button
               onClick={() => setMode('join')}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-lg min-h-[56px]"
+              className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-700 text-white font-bold py-5 px-8 rounded-2xl shadow-2xl hover:shadow-blue-500/50 transform hover:-translate-y-1 active:translate-y-0 transition-all duration-300 text-lg min-h-[64px]"
               style={{ touchAction: 'manipulation' }}
             >
-              Join Game
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <span className="text-2xl">🎯</span>
+                <span>Join Game</span>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </button>
+          </div>
+
+          {/* Features */}
+          <div className="mt-8 pt-8 border-t border-white/20">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl mb-1">👥</div>
+                <div className="text-white/80 text-xs font-medium">Up to 4 Players</div>
+              </div>
+              <div>
+                <div className="text-2xl mb-1">⚡</div>
+                <div className="text-white/80 text-xs font-medium">Real-time</div>
+              </div>
+              <div>
+                <div className="text-2xl mb-1">🏆</div>
+                <div className="text-white/80 text-xs font-medium">Compete</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
