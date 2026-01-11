@@ -44,7 +44,7 @@ export function startServer(): void {
   httpServer.listen(PORT, () => {
     console.log('');
     console.log('🎮 ═══════════════════════════════════════════');
-    console.log('   SIMON GAME SERVER');
+    console.log('   MICHAL SAYS GAME SERVER');
     console.log('═══════════════════════════════════════════════');
     console.log(`   🌐 HTTP:      http://localhost:${PORT}`);
     console.log(`   🔌 WebSocket: ws://localhost:${PORT}`);

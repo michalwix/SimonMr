@@ -1,7 +1,7 @@
 {
   "name": "simon-game-app",
   "version": "1.0.0",
-  "description": "Multiplayer Simon Says game with real-time WebSocket communication",
+  "description": "Multiplayer Michal Says game with real-time WebSocket communication",
   "main": "dist/backend/server.js",
   "scripts": {
     "setup": "bash setup.sh",
