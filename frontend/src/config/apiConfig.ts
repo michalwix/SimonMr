@@ -78,17 +78,25 @@ export function getApiUrl(): string {
  * Same priority as API URL - always uses same URL as API
  */
 export function getSocketUrl(): string {
-  // 1. Check build-time env var
-  if (import.meta.env.VITE_SOCKET_URL) {
+  // PRIORITY 1: If on localhost, ALWAYS use localhost backend (development)
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+      return 'http://localhost:3000';
+    }
+  }
+  
+  // 2. Check build-time env var (only if not localhost)
+  if (import.meta.env.VITE_SOCKET_URL && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
     return import.meta.env.VITE_SOCKET_URL;
   }
 
-  // 2. Check runtime config
-  if (window.__API_CONFIG__?.socketUrl) {
+  // 3. Check runtime config (only if not localhost)
+  if (window.__API_CONFIG__?.socketUrl && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
     return window.__API_CONFIG__.socketUrl;
   }
 
-  // 3. Use same as API URL (WebSocket uses same endpoint)
+  // 4. Use same as API URL (WebSocket uses same endpoint)
   return getApiUrl();
 }
 
