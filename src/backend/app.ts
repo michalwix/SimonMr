@@ -28,8 +28,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 app.use(cors({
   origin: FRONTEND_URL,
   credentials: true,  // CRITICAL: Allows cookies
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 }));
 
 // Parse JSON bodies

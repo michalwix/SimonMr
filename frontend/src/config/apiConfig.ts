@@ -58,7 +58,9 @@ export function getApiUrl(): string {
   }
 
   // 4. Development fallback
-  return 'http://localhost:3000';
+  const devUrl = 'http://localhost:3000';
+  console.log('🔧 Using development API URL:', devUrl);
+  return devUrl;
 }
 
 /**
