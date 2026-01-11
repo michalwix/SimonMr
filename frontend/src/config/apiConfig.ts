@@ -92,18 +92,43 @@ export function getSocketUrl(): string {
   return getApiUrl();
 }
 
-// Export constants (evaluated at module load time)
-export const API_BASE_URL = getApiUrl();
-export const SOCKET_URL = getSocketUrl();
-
-// Log the configured URLs for debugging
-if (typeof window !== 'undefined') {
+// Export constants - but ensure they're evaluated correctly
+// Use IIFE to ensure window is available when evaluating
+export const API_BASE_URL = (() => {
+  // Force evaluation with window check
+  if (typeof window === 'undefined') {
+    return 'http://localhost:3000';
+  }
+  
+  const hostname = window.location.hostname;
+  const url = getApiUrl();
+  
   console.log('🔧 API Configuration:', {
-    API_BASE_URL,
-    SOCKET_URL,
+    API_BASE_URL: url,
+    SOCKET_URL: getSocketUrl(),
+    hostname: hostname,
     VITE_API_URL: import.meta.env.VITE_API_URL,
     VITE_SOCKET_URL: import.meta.env.VITE_SOCKET_URL,
     windowConfig: window.__API_CONFIG__,
     isProduction: import.meta.env.PROD,
+    isDev: import.meta.env.DEV,
   });
+  
+  return url;
+})();
+
+export const SOCKET_URL = (() => {
+  if (typeof window === 'undefined') {
+    return 'http://localhost:3000';
+  }
+  return getSocketUrl();
+})();
+
+// Export functions for dynamic access
+export function getAPI_BASE_URL(): string {
+  return getApiUrl();
+}
+
+export function getSOCKET_URL(): string {
+  return getSocketUrl();
 }
