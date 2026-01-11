@@ -21,7 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       {showSplash && (
-        <SplashScreen onComplete={handleSplashComplete} duration={3000} />
+        <SplashScreen onComplete={handleSplashComplete} />
       )}
       <LandscapeWarning />
       <Routes>
