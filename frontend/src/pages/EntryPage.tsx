@@ -31,6 +31,11 @@ export function EntryPage() {
     }
   }, [searchParams]);
 
+  // Debug: Log when component renders
+  useEffect(() => {
+    console.log('🎮 EntryPage rendered, mode:', mode);
+  }, [mode]);
+
   const handleCreateGame = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
