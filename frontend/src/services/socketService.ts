@@ -5,7 +5,7 @@
  */
 
 import { io, Socket } from 'socket.io-client';
-import { SOCKET_URL } from '../config/apiConfig';
+import { getSocketUrl } from '../config/apiConfig';
 
 let socket: Socket | null = null;
 
@@ -14,7 +14,10 @@ let socket: Socket | null = null;
  */
 export function connect(): Socket {
   if (!socket) {
-    socket = io(SOCKET_URL, {
+    // Use fresh call to ensure correct URL (not cached constant)
+    const socketUrl = getSocketUrl();
+    console.log('🔌 Connecting to socket:', socketUrl);
+    socket = io(socketUrl, {
       withCredentials: true, // CRITICAL: Send cookies with WebSocket
       transports: ['websocket', 'polling'],
     });
