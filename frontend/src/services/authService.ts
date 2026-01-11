@@ -43,7 +43,9 @@ export async function createSession(
   } catch (err) {
     console.error('❌ Fetch error:', err);
     if (err instanceof TypeError && err.message.includes('fetch')) {
-      throw new Error(`Cannot connect to server at ${API_BASE_URL}. Make sure the backend is running on port 3000.`);
+      // Use fresh call to getApiUrl() to ensure we have the correct URL
+      const currentApiUrl = getApiUrl();
+      throw new Error(`Cannot connect to server at ${currentApiUrl}. Make sure the backend is running on port 3000.`);
     }
     throw err;
   }
@@ -82,7 +84,9 @@ export async function joinGame(
   } catch (err) {
     console.error('❌ Fetch error:', err);
     if (err instanceof TypeError && err.message.includes('fetch')) {
-      throw new Error(`Cannot connect to server at ${API_BASE_URL}. Make sure the backend is running on port 3000.`);
+      // Use fresh call to getApiUrl() to ensure we have the correct URL
+      const currentApiUrl = getApiUrl();
+      throw new Error(`Cannot connect to server at ${currentApiUrl}. Make sure the backend is running on port 3000.`);
     }
     throw err;
   }
