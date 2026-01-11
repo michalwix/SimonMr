@@ -17,9 +17,8 @@ services:
     healthCheckPath: /health
 
   # Frontend Static Site
-  - type: web
+  - type: static
     name: simon-game-frontend
-    runtime: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
