@@ -61,7 +61,7 @@ interface SimonStore {
   initializeListeners: () => void;
   cleanup: () => void;
   resetGame: () => void;
-  addColorToSequence: (color: Color) => void;
+  addColorToSequence: (color: Color, gameCode?: string, playerId?: string) => void;
   submitSequence: (gameCode: string, playerId: string) => void;
   clearPlayerSequence: () => void;
   startTimer: (timeoutAt: number, timeoutSeconds: number) => void;
@@ -387,20 +387,39 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
   
   /**
    * Add a color to the player's sequence
+   * Auto-submits when sequence is complete (fastest player wins!)
    */
-  addColorToSequence: (color: Color) => {
-    set((state) => {
-      const newPlayerSequence = [...state.playerSequence, color];
-      const canSubmit = newPlayerSequence.length === state.currentSequence.length;
-      
-      return {
-        playerSequence: newPlayerSequence,
-        canSubmit,
-        message: canSubmit 
-          ? '✅ Sequence complete! Click Submit'
-          : `${newPlayerSequence.length} of ${state.currentSequence.length} colors`,
-      };
+  addColorToSequence: (color: Color, gameCode?: string, playerId?: string) => {
+    const state = get();
+    const newPlayerSequence = [...state.playerSequence, color];
+    const isComplete = newPlayerSequence.length === state.currentSequence.length;
+    
+    set({
+      playerSequence: newPlayerSequence,
+      canSubmit: isComplete,
+      message: isComplete 
+        ? '⚡ Submitting...'
+        : `${newPlayerSequence.length} of ${state.currentSequence.length} colors`,
     });
+    
+    // AUTO-SUBMIT when sequence is complete (fastest wins!)
+    if (isComplete && gameCode && playerId) {
+      console.log('⚡ Auto-submitting sequence (fastest wins!)');
+      
+      const socket = socketService.getSocket();
+      if (socket) {
+        socket.emit('simon:submit_sequence', {
+          gameCode,
+          playerId,
+          sequence: newPlayerSequence,
+        });
+        
+        set({
+          message: '⚡ Submitted! Waiting for others...',
+          isInputPhase: false,
+        });
+      }
+    }
   },
   
   /**

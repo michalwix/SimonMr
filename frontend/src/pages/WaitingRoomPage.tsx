@@ -425,12 +425,7 @@ export function WaitingRoomPage() {
             playerSequence={playerSequence}
             canSubmit={canSubmit}
             lastResult={lastResult}
-            onColorClick={addColorToSequence}
-            onSubmit={() => {
-              if (gameCode && playerId) {
-                submitSequence(gameCode, playerId);
-              }
-            }}
+            onColorClick={(color) => addColorToSequence(color, gameCode, playerId)}
             disabled={isEliminated}
             secondsRemaining={secondsRemaining}
             timerColor={timerColor}

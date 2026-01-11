@@ -1,0 +1,101 @@
+# Simon Game App - Cursor Rules
+
+## Render Deployment Structure
+
+This project is deployed on Render with 2 services:
+
+### Workspace
+- **Owner**: Michal's workspace
+- **Owner ID**: `tea-d5dqa46mcj7s73avpl30`
+- **GitHub Repo**: `michalwix/SimonMr`
+
+### Services
+
+#### 1. Backend (Web Service)
+- **Name**: `simon-game-backend`
+- **Service ID**: `srv-d5hotrer433s73btem3g`
+- **Type**: Web Service (Node.js)
+- **URL**: https://simon-game-backend-edm5.onrender.com
+- **Dashboard**: https://dashboard.render.com/web/srv-d5hotrer433s73btem3g
+- **Region**: Oregon
+- **Plan**: Starter
+- **Branch**: `main`
+- **Auto Deploy**: Yes (on commit)
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npm start`
+- **Health Check**: `/health`
+
+#### 2. Frontend (Static Site)
+- **Name**: `simon-game-frontend`
+- **Service ID**: `srv-d5hotrmr433s73btem7g`
+- **Type**: Static Site
+- **URL**: https://simon-game-frontend-r7an.onrender.com
+- **Dashboard**: https://dashboard.render.com/static/srv-d5hotrmr433s73btem7g
+- **Plan**: Starter
+- **Branch**: `main`
+- **Auto Deploy**: Yes (on commit)
+- **Build Command**: `cd frontend && npm install && npm run build`
+- **Publish Path**: `frontend/dist`
+
+---
+
+## Render MCP Tools Available
+
+When working with Render, use these MCP tools:
+
+### List/View
+- `mcp_render_list_services` - List all services
+- `mcp_render_list_deploys` - List deploys for a service (requires serviceId)
+- `mcp_render_list_logs` - List logs (requires resource ID)
+- `mcp_render_list_postgres_instances` - List Postgres databases
+- `mcp_render_list_key_value` - List Key Value stores
+- `mcp_render_list_workspaces` - List workspaces
+
+### Get Details
+- `mcp_render_get_service` - Get service details (requires serviceId)
+- `mcp_render_get_deploy` - Get deploy details (requires serviceId, deployId)
+- `mcp_render_get_metrics` - Get performance metrics
+- `mcp_render_get_postgres` - Get Postgres instance details
+- `mcp_render_get_key_value` - Get Key Value instance details
+
+### Create
+- `mcp_render_create_web_service` - Create new web service
+- `mcp_render_create_static_site` - Create new static site
+- `mcp_render_create_postgres` - Create new Postgres database
+- `mcp_render_create_key_value` - Create new Key Value store
+
+### Update
+- `mcp_render_update_web_service` - Update web service
+- `mcp_render_update_static_site` - Update static site
+- `mcp_render_update_environment_variables` - Update env vars
+
+### Other
+- `mcp_render_select_workspace` - Select workspace (ask user first!)
+- `mcp_render_query_render_postgres` - Run read-only SQL queries
+
+---
+
+## Quick Reference
+
+| Action | Service ID |
+|--------|------------|
+| Backend logs/deploys | `srv-d5hotrer433s73btem3g` |
+| Frontend logs/deploys | `srv-d5hotrmr433s73btem7g` |
+
+---
+
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐
+│    Frontend     │────▶│     Backend     │
+│  (Static Site)  │     │  (Web Service)  │
+│                 │     │                 │
+│  React + Vite   │     │ Node.js/Express │
+│  Tailwind CSS   │     │   WebSocket     │
+└─────────────────┘     └─────────────────┘
+        │                       │
+        └───────────────────────┘
+                  │
+           Render Platform
+```

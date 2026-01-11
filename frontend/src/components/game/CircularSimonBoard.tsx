@@ -22,7 +22,6 @@ interface CircularSimonBoardProps {
   canSubmit: boolean;
   lastResult: { isCorrect: boolean; playerName: string } | null;
   onColorClick: (color: Color) => void;
-  onSubmit: () => void;
   disabled?: boolean;
   secondsRemaining: number;
   timerColor: 'green' | 'yellow' | 'red';
@@ -158,7 +157,6 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
   playerSequence,
   canSubmit,
   onColorClick,
-  onSubmit,
   disabled = false,
   secondsRemaining,
   timerColor,
@@ -482,28 +480,16 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
         </div>
       )}
 
-      {/* Submit Button */}
-      {isInputPhase && (
-        <button
-          onClick={() => {
-            if (canSubmit && 'vibrate' in navigator) {
-              navigator.vibrate(100);
-            }
-            onSubmit();
-          }}
-          disabled={!canSubmit}
-          style={{ touchAction: 'manipulation' }}
-          className={`
-            w-full max-w-[min(85vw,320px)] px-6 py-3 rounded-xl font-bold text-base
-            min-h-[56px]
-            transition-all duration-100
-            ${canSubmit 
-              ? 'bg-green-500 hover:bg-green-600 active:bg-green-700 text-white cursor-pointer shadow-lg active:scale-95' 
-              : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'}
-          `}
-        >
-          {canSubmit ? '✅ SUBMIT' : `⏳ ${playerSequence.length}/${sequence.length}`}
-        </button>
+      {/* Speed indicator - no submit button needed, fastest wins! */}
+      {isInputPhase && !canSubmit && (
+        <div className="w-full max-w-[min(85vw,320px)] px-6 py-3 rounded-xl font-bold text-base text-center bg-gray-700/80 text-white">
+          ⚡ BE FAST! {playerSequence.length}/{sequence.length}
+        </div>
+      )}
+      {canSubmit && (
+        <div className="w-full max-w-[min(85vw,320px)] px-6 py-3 rounded-xl font-bold text-base text-center bg-green-500/80 text-white animate-pulse">
+          ✅ Submitted! Waiting for others...
+        </div>
       )}
     </div>
   );
