@@ -45,8 +45,27 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-2xl animate-bounce" style={{ animationDelay: '0.6s' }}></div>
         </div>
         
+        {/* Modern circular game board icon */}
+        <div className="mb-8 relative">
+          <div className="relative w-48 h-48 sm:w-64 sm:h-64">
+            {/* Outer ring */}
+            <div className="absolute inset-0 rounded-full border-8 border-white/30"></div>
+            {/* Color quadrants */}
+            <div className="absolute inset-2 rounded-full overflow-hidden">
+              <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-br from-pink-500 to-pink-600"></div>
+              <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-blue-500 to-blue-600"></div>
+              <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-yellow-500 to-yellow-600"></div>
+              <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-green-500 to-green-600"></div>
+            </div>
+            {/* Center circle */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 bg-gray-900 rounded-full border-4 border-white/50 flex items-center justify-center">
+              <span className="text-white font-bold text-xl sm:text-2xl">M</span>
+            </div>
+          </div>
+        </div>
+        
         <h1 className="text-6xl sm:text-7xl md:text-8xl font-black mb-6 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl">
-          SIMON SAYS
+          MICHAL SAYS
         </h1>
         
         <p className="text-white/90 text-xl sm:text-2xl font-semibold mb-2">Memory Challenge</p>

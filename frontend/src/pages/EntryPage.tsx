@@ -95,7 +95,7 @@ export function EntryPage() {
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-black mb-4 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl">
-              SIMON SAYS
+              MICHAL SAYS
             </h1>
             <p className="text-white/90 text-lg sm:text-xl font-semibold mb-2">Memory Challenge</p>
             <p className="text-white/70 text-sm sm:text-base">Test your memory with friends!</p>
