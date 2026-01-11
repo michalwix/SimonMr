@@ -100,7 +100,7 @@ const ColorWedge: React.FC<WedgeProps> = ({
   // DIMMED base colors (darker when inactive) and VERY BRIGHT when active
   const colors: Record<Color, { dim: string; bright: string }> = {
     green: { dim: '#1a7a28', bright: '#44ff66' },  // Dark green -> Neon green
-    red: { dim: '#8b1a1a', bright: '#ff4444' },    // Dark red -> Bright red
+    red: { dim: '#8b1a5a', bright: '#ff44aa' },    // Dark pink -> Bright pink
     yellow: { dim: '#8b7a00', bright: '#ffff00' }, // Dark yellow -> Pure yellow
     blue: { dim: '#0a3d6b', bright: '#44aaff' },   // Dark blue -> Bright blue
   };
