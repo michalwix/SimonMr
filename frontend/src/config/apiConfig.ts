@@ -83,3 +83,15 @@ export function getSocketUrl(): string {
 // Export constants (evaluated at module load time)
 export const API_BASE_URL = getApiUrl();
 export const SOCKET_URL = getSocketUrl();
+
+// Log the configured URLs for debugging
+if (typeof window !== 'undefined') {
+  console.log('🔧 API Configuration:', {
+    API_BASE_URL,
+    SOCKET_URL,
+    VITE_API_URL: import.meta.env.VITE_API_URL,
+    VITE_SOCKET_URL: import.meta.env.VITE_SOCKET_URL,
+    windowConfig: window.__API_CONFIG__,
+    isProduction: import.meta.env.PROD,
+  });
+}

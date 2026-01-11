@@ -18,21 +18,35 @@ export async function createSession(
   displayName: string,
   avatarId: string
 ): Promise<CreateSessionResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/create-session`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include', // CRITICAL: Send/receive cookies
-    body: JSON.stringify({ displayName, avatarId }),
-  });
+  const url = `${API_BASE_URL}/api/auth/create-session`;
+  console.log('🌐 Creating session:', { url, displayName, avatarId });
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // CRITICAL: Send/receive cookies
+      body: JSON.stringify({ displayName, avatarId }),
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create session');
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: `HTTP ${response.status}: ${response.statusText}` }));
+      console.error('❌ Create session error:', error);
+      throw new Error(error.error || 'Failed to create session');
+    }
+
+    const data = await response.json();
+    console.log('✅ Session created:', data);
+    return data;
+  } catch (err) {
+    console.error('❌ Fetch error:', err);
+    if (err instanceof TypeError && err.message.includes('fetch')) {
+      throw new Error(`Cannot connect to server at ${API_BASE_URL}. Make sure the backend is running on port 3000.`);
+    }
+    throw err;
   }
-
-  return response.json();
 }
 
 /**
@@ -43,21 +57,35 @@ export async function joinGame(
   avatarId: string,
   gameCode: string
 ): Promise<JoinGameResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/join-game`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include', // CRITICAL: Send/receive cookies
-    body: JSON.stringify({ displayName, avatarId, gameCode }),
-  });
+  const url = `${API_BASE_URL}/api/auth/join-game`;
+  console.log('🌐 Joining game:', { url, displayName, avatarId, gameCode });
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // CRITICAL: Send/receive cookies
+      body: JSON.stringify({ displayName, avatarId, gameCode }),
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to join game');
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: `HTTP ${response.status}: ${response.statusText}` }));
+      console.error('❌ Join game error:', error);
+      throw new Error(error.error || 'Failed to join game');
+    }
+
+    const data = await response.json();
+    console.log('✅ Joined game:', data);
+    return data;
+  } catch (err) {
+    console.error('❌ Fetch error:', err);
+    if (err instanceof TypeError && err.message.includes('fetch')) {
+      throw new Error(`Cannot connect to server at ${API_BASE_URL}. Make sure the backend is running on port 3000.`);
+    }
+    throw err;
   }
-
-  return response.json();
 }
 
 /**
