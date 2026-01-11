@@ -208,7 +208,7 @@ export function EntryPage() {
               Choose Avatar
             </label>
             <div className="grid grid-cols-4 gap-3">
-              {['1', '2', '3', '4', '5', '6', '7', '8'].map((id) => (
+              {['1', '2', '3', '4'].map((id) => (
                 <button
                   key={id}
                   type="button"
@@ -220,7 +220,7 @@ export function EntryPage() {
                   }`}
                   style={{ touchAction: 'manipulation' }}
                 >
-                  <span className="text-3xl">{['😀', '🎮', '🚀', '⚡', '🎨', '🎯', '🏆', '🌟'][parseInt(id) - 1]}</span>
+                  <span className="text-3xl">{['😀', '🎮', '🚀', '⚡'][parseInt(id) - 1]}</span>
                 </button>
               ))}
             </div>
