@@ -50,14 +50,24 @@ export function EntryPage() {
   const handleJoinGame = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(false);
+    setLoading(true);
 
     try {
       const response = await joinGame(displayName, avatarId, gameCode);
       setSession(response.session);
       navigate('/waiting');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to join game');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to join game';
+      
+      // Provide helpful error messages
+      if (errorMessage.includes('Room not found') || errorMessage.includes('room not found')) {
+        setError(
+          'Room not found. The game may have ended or the server restarted. ' +
+          'Ask the host to create a new game and share a fresh game code.'
+        );
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
@@ -169,8 +179,13 @@ export function EntryPage() {
           </div>
           
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm">
-              {error}
+            <div className="bg-red-50 border border-red-200 text-red-800 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm space-y-1">
+              <div className="font-semibold">⚠️ {error}</div>
+              {error.includes('Room not found') && (
+                <div className="text-red-600 text-xs mt-2 pt-2 border-t border-red-200">
+                  💡 Tip: Make sure the host is still in the waiting room and hasn't closed the game.
+                </div>
+              )}
             </div>
           )}
           
