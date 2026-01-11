@@ -10,18 +10,32 @@
     <meta name="theme-color" content="#9333ea" />
     <meta name="description" content="Play Michal Says - A multiplayer memory game" />
     <title>Michal Says - Mobile Game</title>
+    <!-- Cache prevention for development -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <!-- Runtime API Configuration -->
-    <script src="/config.js?v=2"></script>
+    <script src="/config.js?v=3"></script>
     <!-- Cache busting for development -->
     <script>
       // Force reload if old code detected
       if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
         console.log('🔧 Localhost detected - ensuring fresh code');
+        
+        // Unregister any service workers that might be caching old code
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => {
+              console.log('🗑️ Unregistering service worker:', registration.scope);
+              registration.unregister();
+            });
+          });
+        }
       }
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx?v=2"></script>
+    <script type="module" src="/src/main.tsx?v=3"></script>
   </body>
 </html>
