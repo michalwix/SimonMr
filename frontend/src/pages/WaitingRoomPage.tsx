@@ -281,14 +281,67 @@ export function WaitingRoomPage() {
   // Render game board if active
   if (roomStatus === 'active' && isGameActive) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-2 sm:p-4">
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #ec4899 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0.5rem 1rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated background circles */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '5rem',
+            left: '2.5rem',
+            width: '18rem',
+            height: '18rem',
+            background: 'rgba(168, 85, 247, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '5rem',
+            right: '2.5rem',
+            width: '24rem',
+            height: '24rem',
+            background: 'rgba(236, 72, 153, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite',
+            animationDelay: '1s'
+          }}></div>
+        </div>
+        
         {/* Mute Button */}
         <MuteButton />
         
-        <div className="flex flex-col items-center w-full max-w-md">
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          maxWidth: '28rem',
+          position: 'relative',
+          zIndex: 10
+        }}>
           {/* Step 4: Scoreboard */}
           {isGameActive && Object.keys(scores).length > 0 && (
-            <div className="bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 mb-4 w-full border border-gray-700/50 shadow-xl">
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+              borderRadius: '1rem',
+              padding: '1rem',
+              marginBottom: '1rem',
+              width: '100%',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+            }}>
               <h3 className="text-white font-semibold text-sm uppercase tracking-wide mb-3 text-center">
                 Leaderboard
               </h3>
@@ -304,11 +357,22 @@ export function WaitingRoomPage() {
                     return (
                       <div
                         key={player.id}
-                        className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${
-                          isCurrentPlayer 
-                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg scale-105 border-2 border-blue-400' 
-                            : 'bg-gray-700/80 border border-gray-600/50'
-                        }`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.75rem 1rem',
+                          borderRadius: '0.75rem',
+                          transition: 'all 0.2s',
+                          background: isCurrentPlayer 
+                            ? 'linear-gradient(to right, #2563eb, #3b82f6, #06b6d4)' 
+                            : 'rgba(255, 255, 255, 0.1)',
+                          border: isCurrentPlayer 
+                            ? '2px solid rgba(59, 130, 246, 0.5)' 
+                            : '1px solid rgba(255, 255, 255, 0.2)',
+                          transform: isCurrentPlayer ? 'scale(1.05)' : 'scale(1)',
+                          boxShadow: isCurrentPlayer ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none'
+                        }}
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg font-bold text-gray-400 w-6">
@@ -337,9 +401,17 @@ export function WaitingRoomPage() {
           
           {/* Step 4: Eliminated Message */}
           {isEliminated && (
-            <div className="bg-red-500/20 border-2 border-red-500 rounded-xl sm:rounded-2xl p-3 mb-3 text-center w-full">
-              <div className="text-3xl mb-1">💀</div>
-              <div className="text-white text-base sm:text-lg font-bold">
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.2)',
+              border: '2px solid rgba(239, 68, 68, 0.5)',
+              borderRadius: '1rem',
+              padding: '0.75rem',
+              marginBottom: '0.75rem',
+              textAlign: 'center',
+              width: '100%'
+            }}>
+              <div style={{ fontSize: '1.875rem', marginBottom: '0.25rem' }}>💀</div>
+              <div style={{ color: 'white', fontSize: '1rem', fontWeight: 'bold' }}>
                 Eliminated!
               </div>
             </div>
@@ -367,9 +439,16 @@ export function WaitingRoomPage() {
           
           {/* Message Display */}
           {message && (
-            <div className="mt-6 text-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-4 border border-white/20 inline-block">
-                <p className="text-white text-lg font-semibold">{message}</p>
+            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '0.75rem',
+                padding: '1rem 1.5rem',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                display: 'inline-block'
+              }}>
+                <p style={{ color: 'white', fontSize: '1.125rem', fontWeight: 600, margin: 0 }}>{message}</p>
               </div>
             </div>
           )}
@@ -381,14 +460,76 @@ export function WaitingRoomPage() {
   // Render countdown
   if (roomStatus === 'countdown' && countdownValue !== null) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="bg-white/10 backdrop-blur-sm rounded-full w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center mb-6 mx-auto border-4 border-white/20 shadow-2xl">
-            <h1 className="text-7xl sm:text-8xl md:text-9xl font-bold text-white animate-pulse">
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #ec4899 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated background circles */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '5rem',
+            left: '2.5rem',
+            width: '18rem',
+            height: '18rem',
+            background: 'rgba(168, 85, 247, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '5rem',
+            right: '2.5rem',
+            width: '24rem',
+            height: '24rem',
+            background: 'rgba(236, 72, 153, 0.2)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            animation: 'pulse 2s ease-in-out infinite',
+            animationDelay: '1s'
+          }}></div>
+        </div>
+        
+        <div style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '50%',
+            width: '12rem',
+            height: '12rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '1.5rem',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            border: '4px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+            animation: 'pulse 1s ease-in-out infinite'
+          }}>
+            <h1 style={{
+              fontSize: 'clamp(4rem, 15vw, 6rem)',
+              fontWeight: 900,
+              color: 'white',
+              margin: 0
+            }}>
               {countdownValue}
             </h1>
           </div>
-          <p className="text-2xl sm:text-3xl md:text-4xl text-white font-semibold animate-bounce">
+          <p style={{
+            fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+            color: 'white',
+            fontWeight: 600,
+            animation: 'bounce 1s ease-in-out infinite',
+            margin: 0
+          }}>
             Get ready! 🎮
           </p>
         </div>
@@ -398,7 +539,56 @@ export function WaitingRoomPage() {
   
   // Render waiting room
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 flex items-center justify-center p-4 sm:p-6">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #ec4899 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '1rem 1.5rem',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Animated background circles */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute',
+          top: '5rem',
+          left: '2.5rem',
+          width: '18rem',
+          height: '18rem',
+          background: 'rgba(168, 85, 247, 0.2)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          animation: 'pulse 2s ease-in-out infinite'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '5rem',
+          right: '2.5rem',
+          width: '24rem',
+          height: '24rem',
+          background: 'rgba(236, 72, 153, 0.2)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          animation: 'pulse 2s ease-in-out infinite',
+          animationDelay: '1s'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '20rem',
+          height: '20rem',
+          background: 'rgba(59, 130, 246, 0.2)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          animation: 'pulse 2s ease-in-out infinite',
+          animationDelay: '0.5s'
+        }}></div>
+      </div>
+      
       {/* Toast notification */}
       {toast && (
         <Toast
@@ -408,33 +598,106 @@ export function WaitingRoomPage() {
         />
       )}
       
-      <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 max-w-md sm:max-w-xl md:max-w-2xl w-full border border-white/20">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '1.5rem',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        padding: '1.5rem 2rem',
+        maxWidth: '42rem',
+        width: '100%',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        position: 'relative',
+        zIndex: 10
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <h1 style={{
+            fontSize: 'clamp(1.875rem, 5vw, 2.25rem)',
+            fontWeight: 700,
+            background: 'linear-gradient(to right, #ffffff, #e9d5ff, #fce7f3)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            marginBottom: '0.5rem'
+          }}>
             Waiting Room
           </h1>
-          <p className="text-gray-600 text-sm">Waiting for players to join...</p>
+          <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.875rem' }}>Waiting for players to join...</p>
         </div>
         
         {/* Game Code Display with Share Buttons */}
-        <div className="mb-8">
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 mb-4 border-2 border-purple-200">
-            <p className="text-center text-gray-700 mb-2 text-sm font-medium">
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '1rem',
+            padding: '1.5rem',
+            marginBottom: '1rem',
+            border: '1px solid rgba(255, 255, 255, 0.3)'
+          }}>
+            <p style={{
+              textAlign: 'center',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 500
+            }}>
               Share this code with friends:
             </p>
-            <div className="text-center">
-              <span className="font-mono font-bold text-3xl sm:text-4xl text-purple-600 tracking-wider bg-white px-6 py-3 rounded-xl inline-block border-2 border-purple-300 shadow-md">
+            <div style={{ textAlign: 'center' }}>
+              <span style={{
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                fontSize: 'clamp(1.875rem, 6vw, 2.25rem)',
+                color: '#ffffff',
+                letterSpacing: '0.1em',
+                background: 'rgba(255, 255, 255, 0.2)',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '0.75rem',
+                display: 'inline-block',
+                border: '2px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}>
                 {gameCode}
               </span>
             </div>
           </div>
           
           {/* Invite Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            justifyContent: 'center'
+          }}>
             <button
               onClick={copyGameCode}
-              className="bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 min-h-[48px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                background: 'rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                fontWeight: 600,
+                padding: '0.75rem 1.25rem',
+                borderRadius: '0.75rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                fontSize: '1rem',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                minHeight: '48px',
+                touchAction: 'manipulation',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
               title="Copy game code"
             >
               📋 <span className="hidden sm:inline">Copy Code</span><span className="sm:hidden">Code</span>
@@ -442,8 +705,32 @@ export function WaitingRoomPage() {
             
             <button
               onClick={copyInviteLink}
-              className="bg-blue-100 hover:bg-blue-200 active:bg-blue-300 text-blue-700 font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 min-h-[48px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                background: 'linear-gradient(to right, #2563eb, #3b82f6, #06b6d4)',
+                color: 'white',
+                fontWeight: 600,
+                padding: '0.75rem 1.25rem',
+                borderRadius: '0.75rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                fontSize: '1rem',
+                border: 'none',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                minHeight: '48px',
+                touchAction: 'manipulation',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+              }}
               title="Copy invite link"
             >
               🔗 <span className="hidden sm:inline">Copy Link</span><span className="sm:hidden">Link</span>
@@ -451,8 +738,32 @@ export function WaitingRoomPage() {
             
             <button
               onClick={shareGame}
-              className="bg-green-100 hover:bg-green-200 active:bg-green-300 text-green-700 font-semibold py-3 px-5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 min-h-[48px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                background: 'linear-gradient(to right, #9333ea, #a855f7, #ec4899)',
+                color: 'white',
+                fontWeight: 600,
+                padding: '0.75rem 1.25rem',
+                borderRadius: '0.75rem',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                fontSize: '1rem',
+                border: 'none',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                minHeight: '48px',
+                touchAction: 'manipulation',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+              }}
               title="Share with friends"
             >
               📤 <span className="hidden sm:inline">Share</span>
@@ -461,32 +772,63 @@ export function WaitingRoomPage() {
         </div>
         
         {/* Players List */}
-        <div className="mb-8">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <div style={{ marginBottom: '2rem' }}>
+          <h2 style={{
+            fontSize: 'clamp(1.125rem, 3vw, 1.25rem)',
+            fontWeight: 700,
+            color: 'rgba(255, 255, 255, 0.9)',
+            marginBottom: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
             <span>👥</span>
             <span>Players ({players.length}/4)</span>
           </h2>
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {players.map(player => {
               const isCurrentPlayer = player.id === playerId;
               return (
                 <div 
-                  key={player.id} 
-                  className={`rounded-xl p-4 flex items-center justify-between transition-all duration-200 ${
-                    isCurrentPlayer 
-                      ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 shadow-md' 
-                      : 'bg-gray-50 border border-gray-200'
-                  }`}
+                  key={player.id}
+                  style={{
+                    borderRadius: '0.75rem',
+                    padding: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    transition: 'all 0.2s',
+                    background: isCurrentPlayer 
+                      ? 'linear-gradient(to right, rgba(37, 99, 235, 0.3), rgba(147, 51, 234, 0.3))' 
+                      : 'rgba(255, 255, 255, 0.1)',
+                    border: isCurrentPlayer 
+                      ? '2px solid rgba(59, 130, 246, 0.5)' 
+                      : '1px solid rgba(255, 255, 255, 0.2)',
+                    boxShadow: isCurrentPlayer ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+                  }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{player.avatar || '😀'}</span>
-                    <span className={`font-semibold ${isCurrentPlayer ? 'text-blue-700' : 'text-gray-700'}`}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '1.5rem' }}>{player.avatar || '😀'}</span>
+                    <span style={{
+                      fontWeight: 600,
+                      color: isCurrentPlayer ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)'
+                    }}>
                       {player.displayName}
-                      {isCurrentPlayer && <span className="ml-2 text-xs text-blue-500 font-normal">(You)</span>}
+                      {isCurrentPlayer && <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>(You)</span>}
                     </span>
                   </div>
                   {player.isHost && (
-                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <span style={{
+                      background: 'rgba(234, 179, 8, 0.2)',
+                      color: 'rgba(234, 179, 8, 1)',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem'
+                    }}>
                       👑 Host
                     </span>
                   )}
@@ -500,14 +842,44 @@ export function WaitingRoomPage() {
         {(isHost || players.length === 1) && (
           <>
             {players.length === 1 && (
-              <p className="text-center text-sm text-gray-500 mb-4 bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p style={{
+                textAlign: 'center',
+                fontSize: '0.875rem',
+                color: 'rgba(255, 255, 255, 0.8)',
+                marginBottom: '1rem',
+                background: 'rgba(59, 130, 246, 0.2)',
+                borderRadius: '0.5rem',
+                padding: '0.75rem',
+                border: '1px solid rgba(59, 130, 246, 0.3)'
+              }}>
                 💡 You can start solo or wait for others to join
               </p>
             )}
             <button
               onClick={handleStartGame}
-              className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-lg min-h-[56px]"
-              style={{ touchAction: 'manipulation' }}
+              style={{
+                width: '100%',
+                background: 'linear-gradient(to right, #9333ea, #a855f7, #ec4899)',
+                color: 'white',
+                fontWeight: 700,
+                padding: '1rem 1.5rem',
+                borderRadius: '0.75rem',
+                border: 'none',
+                boxShadow: '0 10px 15px -3px rgba(147, 51, 234, 0.5)',
+                transition: 'all 0.2s',
+                fontSize: '1.125rem',
+                minHeight: '56px',
+                touchAction: 'manipulation',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(147, 51, 234, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(147, 51, 234, 0.5)';
+              }}
             >
               🎮 {players.length === 1 ? 'Start Solo Game' : 'Start Game'}
             </button>
@@ -515,7 +887,11 @@ export function WaitingRoomPage() {
         )}
         
         {!isHost && players.length > 1 && (
-          <p className="text-center text-gray-500 text-sm sm:text-base">
+          <p style={{
+            textAlign: 'center',
+            color: 'rgba(255, 255, 255, 0.8)',
+            fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+          }}>
             Waiting for host to start the game...
           </p>
         )}
