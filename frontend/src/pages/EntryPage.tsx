@@ -9,9 +9,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createSession, joinGame } from '../services/authService';
 import { useAuthStore } from '../store/authStore';
+import { IntroScreen } from '../components/ui/IntroScreen';
 
 export function EntryPage() {
   const [searchParams] = useSearchParams();
+  const [showIntro, setShowIntro] = useState(true);
   const [mode, setMode] = useState<'create' | 'join' | null>(null);
   const [displayName, setDisplayName] = useState('');
   const [gameCode, setGameCode] = useState('');
@@ -35,6 +37,11 @@ export function EntryPage() {
   useEffect(() => {
     console.log('🎮 EntryPage rendered, mode:', mode);
   }, [mode]);
+
+  // Show intro screen first, then welcome screen
+  if (showIntro) {
+    return <IntroScreen onComplete={() => setShowIntro(false)} />;
+  }
 
   const handleCreateGame = async (e: React.FormEvent) => {
     e.preventDefault();
