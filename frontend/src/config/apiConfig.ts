@@ -24,22 +24,32 @@ declare global {
  * 4. Development fallback (localhost)
  */
 export function getApiUrl(): string {
-  // 1. Check build-time env var (set during Render build)
-  if (import.meta.env.VITE_API_URL) {
+  // PRIORITY 1: If on localhost, ALWAYS use localhost backend (development)
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+      const devUrl = 'http://localhost:3000';
+      console.log('🔧 Development mode detected - using localhost:', devUrl);
+      return devUrl;
+    }
+  }
+  
+  // PRIORITY 2: Check build-time env var (set during Render build) - but only if not localhost
+  if (import.meta.env.VITE_API_URL && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
     return import.meta.env.VITE_API_URL;
   }
 
-  // 2. Check runtime config (set via script tag in index.html)
-  if (window.__API_CONFIG__?.apiUrl) {
+  // PRIORITY 3: Check runtime config (set via script tag in index.html) - but only if not localhost
+  if (window.__API_CONFIG__?.apiUrl && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
     return window.__API_CONFIG__.apiUrl;
   }
 
-  // 3. Auto-detect in production (Render deployment)
+  // PRIORITY 4: Auto-detect in production (Render deployment) - ONLY if actually on Render
   if (import.meta.env.PROD && typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     
-    // If on Render domain, try to construct backend URL
-    if (hostname.includes('onrender.com')) {
+    // Only auto-detect if we're actually on Render (not localhost)
+    if (hostname.includes('onrender.com') && !hostname.includes('localhost')) {
       // Pattern: simon-game-frontend-XXXX.onrender.com -> simon-game-backend-XXXX.onrender.com
       const match = hostname.match(/simon-game-frontend-([^.]+)/);
       if (match) {
@@ -57,9 +67,9 @@ export function getApiUrl(): string {
     }
   }
 
-  // 4. Development fallback
+  // PRIORITY 5: Final fallback - always localhost for safety
   const devUrl = 'http://localhost:3000';
-  console.log('🔧 Using development API URL:', devUrl);
+  console.log('🔧 Final fallback - using localhost:', devUrl);
   return devUrl;
 }
 
